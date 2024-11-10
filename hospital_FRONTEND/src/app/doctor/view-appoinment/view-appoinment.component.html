@@ -1,0 +1,29 @@
+<div class="card">
+    <img src="/assets/images/doctorBanner.png" alt="" class="img-fluid">
+</div>
+<div class="background">
+    <div class="pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card rounded-4">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <div>
+                                    <h3 class="card-title">Hi {{this.doctors[0].name}}, your appointments</h3>
+                                </div>
+                            </div>
+                            <div class="table-responsive" >
+                                <table id="doctorAppoinmentTable" class="table">
+                                </table>
+                            </div>
+                            <div class="table-responsive" *ngIf="!allAppoinments">
+                                <h4 class="text-center">You have a no appointments.</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,291 @@
+<div class="card">
+    <img src="/assets/images/banner.png" alt="" class="img-fluid">
+</div>
+<div class="background ">
+    <div class="pt-5">
+        <div class="container rounded-5 bg-white">
+            <header class="mt" style="padding:2%;">
+                <h3 class="text-center">Welcome, Care Seekers</h3>
+                <p class="text-center">We are ready to help you.
+                </p>
+            </header>
+            <div class="row mt-1 d-flex justify-content-center">
+                <div class="col-6 mb-3 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary" (click)="viewAppointment()">View Appointment</button>
+                </div>
+                <div class="col-6 mb-3 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary" (click)="bookAppointment()">Book Appointment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pt-5" *ngIf="view">
+        <div class="container rounded-5 bg-white">
+            <header class="mt" style="padding:2%;">
+                <h3 class="text-center">Doctor Appointment view Form</h3>
+                <p class="text-center">Fill the form below and know your appointments and plan
+                    your
+                    appointments.
+                </p>
+            </header>
+            <div class="p-4">
+                <form [formGroup]="previousAppointmentForm">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-3">
+                            <label class="form-label" for="mobile">
+                                <span>Mobile Number </span>
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input class="form-control" formControlName="mobile" id="mobile" name="mobile" type="text"
+                                required>
+                            <div *ngIf="registerForm.get('mobile')?.invalid && (registerForm.get('mobile')?.dirty || registerForm.get('mobile')?.touched)"
+                                class="text-danger">
+                                <div *ngIf="registerForm.get('mobile')?.errors?. ['required']">Mobile number
+                                    is
+                                    required.</div>
+                                <div *ngIf="registerForm.get('mobile')?.errors?. ['pattern']">Mobile must be
+                                    10 digits.</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-3">
+                            <label class="form-label" for="email">
+                                <span>Email </span>
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input class="form-control" formControlName="email" id="email" name="email" type="email"
+                                required>
+                            <div *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)"
+                                class="text-danger">
+                                <div *ngIf="registerForm.get('email')?.errors?. ['required']">Email
+                                    is
+                                    required.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12 mb-3 d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary"
+                                (click)="getDetailsByMobileAndEmail(previousAppointmentForm.value)"
+                                [disabled]="previousAppointmentForm.invalid">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="table-responsive" >
+                <table id="doctorAppoinmentTable" class="table">
+                </table>
+            </div>
+            <div class="table-responsive" *ngIf="patientViewData?.length == 0">
+                <h4 class="text-center">You have a no appointments.</h4>
+            </div>
+        </div>
+    </div>
+    <div class="pt-5" *ngIf="book">
+        <div class="container rounded-5 bg-white">
+            <header class="mt" style="padding:2%;">
+                <h3 class="text-center">Doctor Appointment Request Form</h3>
+                <p class="text-center">Fill the form below and we will get back soon to you for more updates and
+                    plan
+                    your
+                    appointment.
+                </p>
+            </header>
+            <div class="p-4">
+                <form [formGroup]="registerForm" (ngSubmit)="submit(registerForm.value)">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-3">
+                            <label class="form-label" for="firstName">
+                                <span>First Name </span>
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input class="form-control" formControlName="firstName" id="firstName" name="firstName"
+                                type="text" required>
+                            <div *ngIf="registerForm.get('firstName')?.invalid && (registerForm.get('firstName')?.dirty || registerForm.get('firstName')?.touched)"
+                                class="text-danger">
+                                <div *ngIf="registerForm.get('firstName')?.errors?. ['required']">First Name
+                                    is
+                                    required.</div>
+                                <div *ngIf="registerForm.get('firstName')?.errors?. ['pattern']">First Name
+                                    must
+                                    consist of letters only, without
+                                    spaces or symbols.</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-3">
+                            <label class="form-label" for="lastName">
+                                <span>Last Name </span>
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input class="form-control" formControlName="lastName" id="lastName" name="lastName"
+                                type="text" required>
+                            <div *ngIf="registerForm.get('lastName')?.invalid && (registerForm.get('lastName')?.dirty || registerForm.get('lastName')?.touched)"
+                                class="text-danger">
+                                <div *ngIf="registerForm.get('lastName')?.errors?. ['required']">Last Name
+                                    is
+                                    required.</div>
+                                <div *ngIf="registerForm.get('lastName')?.errors?. ['pattern']">Last Name
+                                    must
+                                    consist of letters only, without
+                                    spaces or symbols.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-3">
+                            <label class="form-label" for="dob">
+                                <span>Date Of Birth </span>
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input class="form-control" formControlName="dob" id="dob" name="dob" type="date" required>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-3">
+                            <label class="form-label" for="gender">
+                                <span>Gender </span>
+                                <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select" formControlName="gender" id="gender"
+                                aria-label="Default select example">
+                                <option value="" disabled selected>Select</option>
+                                <option *ngFor="let g of gender" [value]="g.value">{{ g.value }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-3">
+                            <label class="form-label" for="email">
+                                <span>Email </span>
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input class="form-control" formControlName="email" id="email" name="email" type="email"
+                                required>
+                            <div *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)"
+                                class="text-danger">
+                                <div *ngIf="registerForm.get('email')?.errors?. ['required']">Email
+                                    is
+                                    required.</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-3">
+                            <label class="form-label" for="mobile">
+                                <span>Mobile Number </span>
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input class="form-control" formControlName="mobile" id="mobile" name="mobile" type="text"
+                                required>
+                            <div *ngIf="registerForm.get('mobile')?.invalid && (registerForm.get('mobile')?.dirty || registerForm.get('mobile')?.touched)"
+                                class="text-danger">
+                                <div *ngIf="registerForm.get('mobile')?.errors?. ['required']">Mobile number
+                                    is
+                                    required.</div>
+                                <div *ngIf="registerForm.get('mobile')?.errors?. ['pattern']">Mobile must be
+                                    10 digits.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label class="form-label" for="address">
+                                <span>Address </span>
+                                <span class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control" formControlName="address" id="address" name="address"
+                                rows="4" required></textarea>
+                            <div *ngIf="registerForm.get('address')?.invalid && (registerForm.get('address')?.dirty || registerForm.get('address')?.touched)"
+                                class="text-danger">
+                                <div *ngIf="registerForm.get('address')?.errors?. ['required']">Address
+                                    is
+                                    required.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-3">
+                            <label class="form-label" for="doctor">
+                                <span>Please choose your doctor </span>
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="row ms-1">
+                                <select class="form-select" formControlName="doctor" id="doctor"
+                                    aria-label="Default select example">
+                                    <option value="" disabled selected>Select</option>
+                                    <option *ngFor="let doctor of doctors" [value]="doctor.name">{{
+                                        doctor.name
+                                        }}</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-3">
+                            <label class="form-label" for="typeOfAppointment">
+                                <span>Which procedure do you want to make an appointment for?</span>
+                                <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select" formControlName="typeOfAppointment" id="typeOfAppointment"
+                                aria-label="Default select example">
+                                <option value="" disabled selected>Select</option>
+                                <option *ngFor="let appointment of appointmentsFor" [value]="appointment.value">{{
+                                    appointment.name
+                                    }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-3">
+                            <label class="form-label" for="date">
+                                <span>Preferred Appointment Date </span>
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input class="form-control" formControlName="date" id="date" name="date" type="date"
+                                [min]="minDate" (change)="onDateChange($event)" required>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mt-4 mb-3" *ngIf="showSlot">
+                            <label class="form-label" for="slot">
+                                <h5>{{this.convertedDate}}</h5>
+                            </label>
+                            <div class="slots">
+                                <span>Select your slot : </span>
+                                <div class="col-12  d-flex flex-row gap-2 mt-2"
+                                    style=" flex-wrap: nowrap; overflow-x: auto;">
+                                    <button type="button"
+                                        [ngClass]="slotMarked == i ? 'btn btn-lg selectedSlot':'btn btn-lg slot'"
+                                        *ngFor="let slot of availableSlots;let i = index"
+                                        style="font-size: 18px; font-weight: 500;" (click)="selectSlot(slot,i)"
+                                        [disabled]="">{{
+                                        slot
+                                        }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12 mb-3 d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal" [disabled]="registerForm.invalid">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Appointment confirmation</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6 class="text-center">{{this.registerForm.value.firstName}} {{this.registerForm.value.lastName}},
+                    {{this.convertedDate}} - {{this.slotfixed }}</h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
+                <button type="button" class="btn btn-primary" (click)="registerFormSubmit()">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>

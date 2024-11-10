@@ -1,0 +1,22 @@
+.btn-outline-twitter:hover{
+    background-color: #0066B3 !important;
+    color: #fff;
+}
+
+::ng-deep .dataTable-input{
+    border-color: #0066b3 !important;
+}
+
+::ng-deep .dataTable-selector{
+    border-color: #0066b3 !important;
+}
+
+::ng-deep .table td{
+    white-space: break-spaces !important;
+}
+
+.background{
+    background-image:url('/assets/images/hospitalBg.png');
+    background-size: cover;
+    height: 100vh;
+}
